@@ -1,0 +1,21 @@
+steps:
+# step 1: Build Docker image
+- name: gcr.io/cloud-builders/Docker
+  args:
+    -build
+    - -t
+    - asia-south1-docker.pkg.dev/$PROJECT_ID/ci-cd-images/ci-cd-demo:$COMMIT_SHA
+    - .
+
+# STEP 2: Push image to Artifact Registry
+- name: gcr.io/cloud-builders/docker
+  args:
+    - push 
+    - asia-south1-docker.pkg.dev/$PROJECT_ID/ci-cd-images/ci-cd-demo:$COMMIT_SHA
+
+# Store the generated image
+images:
+  - asia-south1-docker.pkg.dev/$PROJECT_ID/ci-cd-images/ci-cd-images/ci-cd-demo:$COMMIT_SHA
+
+options:
+  logging: CLOUD_LOGGING_ONLY
